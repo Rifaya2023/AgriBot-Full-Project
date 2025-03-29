@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriBot - Smart Farming Solutions</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="logo" role="banner">AgriBot</div>
+            <div class="nav-links" role="menubar">
+                <a href="#home" role="menuitem">Home</a>
+                <a href="#services" role="menuitem">Services</a>
+                <a href="#about" role="menuitem">About</a>
+                <a href="#contact" role="menuitem">Contact</a>
+                <a href="login.html" role="menuitem">Login</a>
+                <a href="register.html" role="menuitem">Register</a>
+            </div>
+            <div class="language-selector">
+                <label for="languageSelect" class="visually-hidden">Select Language</label>
+                <select id="languageSelect" aria-label="Change language">
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ்</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero" role="banner" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <h1 id="hero-title" data-translate="welcome">Welcome to AgriBot</h1>
+                <p data-translate="subtitle">Your Smart Farming Assistant powered by AI</p>
+                <a href="#services" class="cta-button" role="button" data-translate="explore">Explore Services</a>
+            </div>
+        </section>
+
+    <section id="services" class="services" aria-labelledby="services-title">
+        <h2 id="services-title" data-translate="servicesTitle">Our Services</h2>
+        <div class="service-grid">
+            <div class="service-card">
+                <i class="fas fa-robot"></i>
+                <h3 data-translate="chatbotTitle">AI Chatbot</h3>
+                <p data-translate="chatbotDesc">Get instant answers to your farming queries</p>
+                <button onclick="openChatbot()" class="service-btn" aria-label="Open AI Chatbot" data-translate="startChat">Start Chat</button>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-leaf"></i>
+                <h3 data-translate="diseaseTitle">Crop Disease Detection</h3>
+                <p data-translate="diseaseDesc">Upload images to identify plant diseases</p>
+                <button onclick="openDiseaseDetection()" class="service-btn" aria-label="Open Disease Detection" data-translate="detectDisease">Detect Disease</button>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-hand-holding-usd"></i>
+                <h3 data-translate="schemesTitle">Government Schemes</h3>
+                <p data-translate="schemesDesc">Find eligible farming schemes and subsidies</p>
+                <button onclick="openSchemes()" class="service-btn" aria-label="View Government Schemes" data-translate="viewSchemes">View Schemes</button>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-cloud-sun"></i>
+                <h3 data-translate="weatherTitle">Weather & Market Updates</h3>
+                <p data-translate="weatherDesc">Get daily weather and crop price updates</p>
+                <button onclick="openUpdates()" class="service-btn" aria-label="Check Weather and Market Updates" data-translate="checkUpdates">Check Updates</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbotModal" class="modal" role="dialog" aria-labelledby="chatbot-title" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="chatbot-container">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input">
+                    <input type="text" id="userInput" placeholder="Ask your farming question...">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Detection Modal -->
+    <div id="diseaseModal" class="modal" role="dialog" aria-labelledby="disease-title" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="disease-container">
+                <div class="upload-section">
+                    <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
+                    <button onclick="detectDisease()" class="analyze-btn">Analyze Image</button>
+                </div>
+                <div id="imagePreview" class="image-preview"></div>
+                <div id="resultSection" class="result-section">
+                    <div class="loading-spinner" style="display: none;"></div>
+                    <div class="result-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Government Schemes Modal -->
+    <div id="schemesModal" class="modal" role="dialog" aria-labelledby="schemes-title" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="schemes-container">
+                <form id="schemeForm" class="scheme-application-form">
+                    <h3>Government Scheme Application</h3>
+                    
+                    <div class="form-section">
+                        <h4>Personal Information</h4>
+                        <div class="form-group">
+                            <label for="farmerName">Full Name</label>
+                            <input type="text" id="farmerName" name="farmerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aadhaar">Aadhaar Number</label>
+                            <input type="text" id="aadhaar" name="aadhaar" pattern="[0-9]{12}" title="Please enter valid 12-digit Aadhaar number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Mobile Number</label>
+                            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" title="Please enter valid 10-digit mobile number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Farm Details</h4>
+                        <div class="form-group">
+                            <label for="location">Village/Town</label>
+                            <input type="text" id="location" name="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="district">District</label>
+                            <input type="text" id="district" name="district" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="landSize">Land Size (in acres)</label>
+                            <input type="number" id="landSize" name="landSize" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cropType">Primary Crop</label>
+                            <select id="cropType" name="cropType" required>
+                                <option value="">Select Crop Type</option>
+                                <option value="rice">Rice</option>
+                                <option value="wheat">Wheat</option>
+                                <option value="cotton">Cotton</option>
+                                <option value="sugarcane">Sugarcane</option>
+                                <option value="pulses">Pulses</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="fruits">Fruits</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Documents Upload</h4>
+                        <div class="form-group">
+                            <label for="landDocument">Land Ownership Document</label>
+                            <input type="file" id="landDocument" name="landDocument" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bankDetails">Bank Passbook (First Page)</label>
+                            <input type="file" id="bankDetails" name="bankDetails" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">Farmer's Photo</label>
+                            <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Bank Details</h4>
+                        <div class="form-group">
+                            <label for="accountName">Account Holder Name</label>
+                            <input type="text" id="accountName" name="accountName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="accountNumber">Account Number</label>
+                            <input type="text" id="accountNumber" name="accountNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ifscCode">IFSC Code</label>
+                            <input type="text" id="ifscCode" name="ifscCode" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Submit Application</button>
+                        <button type="button" class="search-schemes-btn" onclick="searchSchemes()">Search Available Schemes</button>
+                    </div>
+                </form>
+                <div id="schemesResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weather & Market Updates Modal -->
+    <div id="updatesModal" class="modal" role="dialog" aria-labelledby="updates-title" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="updates-container">
+                <div class="weather-section">
+                    <h3>Weather Forecast</h3>
+                    <div id="weatherData"></div>
+                </div>
+                <div class="market-section">
+                    <h3>Market Prices</h3>
+                    <div id="marketData"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </main>
+
+    <footer role="contentinfo" class="enhanced-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> support@agribot.com</p>
+                <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Agri Lane, Tech Valley, India</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Our Services</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="openChatbot(); return false;">AI Chatbot</a></li>
+                    <li><a href="#" onclick="openDiseaseDetection(); return false;">Disease Detection</a></li>
+                    <li><a href="#" onclick="openSchemes(); return false;">Government Schemes</a></li>
+                    <li><a href="#" onclick="openUpdates(); return false;">Weather & Market</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="newsletter">
+                    <h4>Subscribe to Newsletter</h4>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 AgriBot. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

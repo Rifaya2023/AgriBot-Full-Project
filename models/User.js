@@ -19,6 +19,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  mobileNumber: {
+    type: String,
+    required: true
+  },
+  city: {
+    type: String,
+    required: true
+  },
+  state: {
+    type: String,
+    required: true
+  },
+  profilePicture: {
+    type: String,
+    default: ''
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

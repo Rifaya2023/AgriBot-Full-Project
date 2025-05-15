@@ -201,7 +201,6 @@ function getMockMarketData(location = null) {
         lastUpdated: new Date().toLocaleString()
     };
 }
-}
 
 // Weather endpoint
 router.get('/', async (req, res) => {

@@ -1,5 +1,15 @@
 // Language translations for AgriBot
 const translations = {
+    // Store the selected language in localStorage
+    setLanguagePreference: function(lang) {
+        localStorage.setItem('preferredLanguage', lang);
+    },
+
+    // Get the stored language preference
+    getLanguagePreference: function() {
+        return localStorage.getItem('preferredLanguage') || 'en';
+    },
+
     en: {
         // Navigation
         home: 'Home',
@@ -81,6 +91,88 @@ const translations = {
         cropType: 'முதன்மை பயிர்',
         submit: 'விண்ணப்பத்தை சமர்ப்பிக்கவும்',
         search: 'கிடைக்கக்கூடிய திட்டங்களைத் தேடுங்கள்'
+    },
+    hi: {
+        // Navigation
+        home: 'होम',
+        services: 'सेवाएं',
+        about: 'हमारे बारे में',
+        contact: 'संपर्क',
+        login: 'लॉगिन',
+        register: 'रजिस्टर',
+
+        // Hero Section
+        welcome: 'AgriBot में आपका स्वागत है',
+        subtitle: 'AI द्वारा संचालित आपका स्मार्ट कृषि सहायक',
+        explore: 'सेवाएं देखें',
+
+        // Services
+        servicesTitle: 'हमारी सेवाएं',
+        chatbotTitle: 'AI चैटबॉट',
+        chatbotDesc: 'अपने कृषि प्रश्नों के तुरंत उत्तर प्राप्त करें',
+        startChat: 'चैट शुरू करें',
+        diseaseTitle: 'फसल रोग पहचान',
+        diseaseDesc: 'पौधों की बीमारियों की पहचान के लिए छवियां अपलोड करें',
+        detectDisease: 'रोग का पता लगाएं',
+        schemesTitle: 'सरकारी योजनाएं',
+        schemesDesc: 'पात्र कृषि योजनाओं और सब्सिडी का पता लगाएं',
+        viewSchemes: 'योजनाएं देखें',
+        weatherTitle: 'मौसम और बाजार अपडेट',
+        weatherDesc: 'दैनिक मौसम और फसल मूल्य अपडेट प्राप्त करें',
+        checkUpdates: 'अपडेट देखें',
+
+        // Forms
+        fullName: 'पूरा नाम',
+        aadhaarNumber: 'आधार नंबर',
+        mobileNumber: 'मोबाइल नंबर',
+        location: 'गांव/शहर',
+        district: 'जिला',
+        state: 'राज्य',
+        landSize: 'भूमि का आकार (एकड़ में)',
+        cropType: 'मुख्य फसल',
+        submit: 'आवेदन जमा करें',
+        search: 'उपलब्ध योजनाएं खोजें'
+    },
+    te: {
+        // Navigation
+        home: 'హోమ్',
+        services: 'సేవలు',
+        about: 'మా గురించి',
+        contact: 'సంప్రదించండి',
+        login: 'లాగిన్',
+        register: 'రిజిస్టర్',
+
+        // Hero Section
+        welcome: 'AgriBot కి స్వాగతం',
+        subtitle: 'AI ద్వారా నడిచే మీ స్మార్ట్ వ్యవసాయ సహాయకుడు',
+        explore: 'సేవలను అన్వేషించండి',
+
+        // Services
+        servicesTitle: 'మా సేవలు',
+        chatbotTitle: 'AI చాట్‌బాట్',
+        chatbotDesc: 'మీ వ్యవసాయ ప్రశ్నలకు తక్షణ సమాధానాలు పొందండి',
+        startChat: 'చాట్ ప్రారంభించండి',
+        diseaseTitle: 'పంట వ్యాధి గుర్తింపు',
+        diseaseDesc: 'మొక్కల వ్యాధులను గుర్తించడానికి చిత్రాలను అప్‌లోడ్ చేయండి',
+        detectDisease: 'వ్యాధిని కనుగొనండి',
+        schemesTitle: 'ప్రభుత్వ పథకాలు',
+        schemesDesc: 'అర్హత ఉన్న వ్యవసాయ పథకాలు మరియు సబ్సిడీలను కనుగొనండి',
+        viewSchemes: 'పథకాలను వీక్షించండి',
+        weatherTitle: 'వాతావరణం & మార్కెట్ నవీకరణలు',
+        weatherDesc: 'రోజువారీ వాతావరణం మరియు పంట ధరల నవీకరణలను పొందండి',
+        checkUpdates: 'నవీకరణలను తనిఖీ చేయండి',
+
+        // Forms
+        fullName: 'పూర్తి పేరు',
+        aadhaarNumber: 'ఆధార్ నంబర్',
+        mobileNumber: 'మొబైల్ నంబర్',
+        location: 'గ్రామం/పట్టణం',
+        district: 'జిల్లా',
+        state: 'రాష్ట్రం',
+        landSize: 'భూమి పరిమాణం (ఎకరాలలో)',
+        cropType: 'ప్రధాన పంట',
+        submit: 'దరఖాస్తును సమర్పించండి',
+        search: 'అందుబాటులో ఉన్న పథకాలను శోధించండి'
     }
 };
 
@@ -97,18 +189,33 @@ function updateLanguage(lang) {
             }
         }
     });
+
+    // Update HTML lang attribute
+    document.documentElement.lang = lang;
+
+    // Update language selector value
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.value = lang;
+    }
+
+    // Store the language preference
+    translations.setLanguagePreference(lang);
 }
 
 // Initialize language selector
 document.addEventListener('DOMContentLoaded', () => {
     const languageSelect = document.getElementById('languageSelect');
     if (languageSelect) {
+        // Load saved language preference
+        const savedLang = translations.getLanguagePreference();
+        
+        // Update language selector and content
+        languageSelect.value = savedLang;
+        updateLanguage(savedLang);
+
         languageSelect.addEventListener('change', (e) => {
             updateLanguage(e.target.value);
         });
-        
-        // Set initial language
-        const initialLang = languageSelect.value;
-        updateLanguage(initialLang);
     }
 });

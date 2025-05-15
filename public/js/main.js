@@ -1,4 +1,4 @@
-// Modal Management
+// Modal Management with Enhanced Animations
 const modals = {
     chatbot: document.getElementById('chatbotModal'),
     disease: document.getElementById('diseaseModal'),
@@ -6,33 +6,82 @@ const modals = {
     updates: document.getElementById('updatesModal')
 };
 
-// Close button functionality for all modals
+// Initialize modals with animation classes
+Object.values(modals).forEach(modal => {
+    if (modal) {
+        modal.classList.add('modal-animated');
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) modalContent.classList.add('modal-content-animated');
+    }
+});
+
+// Enhanced close button functionality for all modals
 document.querySelectorAll('.close-btn').forEach(btn => {
-    btn.onclick = () => {
-        Object.values(modals).forEach(modal => modal.style.display = 'none');
+    btn.onclick = (e) => {
+        e.preventDefault();
+        const modal = btn.closest('.modal-animated');
+        if (modal) {
+            modal.classList.add('modal-closing');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.remove('modal-closing');
+            }, 300);
+        }
     };
 });
 
-// Close modal when clicking outside
+// Enhanced modal close when clicking outside
 window.onclick = (event) => {
     Object.values(modals).forEach(modal => {
         if (event.target === modal) {
-            modal.style.display = 'none';
+            modal.classList.add('modal-closing');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.remove('modal-closing');
+            }, 300);
         }
     });
 };
 
-// Modal opening functions
+// Modal opening functions with enhanced animations and initialization
 function openChatbot() {
     modals.chatbot.style.display = 'block';
+    // Initialize chatbot if needed
+    initializeChatbot();
+    // Focus on input field
+    setTimeout(() => {
+        const input = document.getElementById('userInput');
+        if (input) input.focus();
+    }, 300);
 }
 
 function openDiseaseDetection() {
     modals.disease.style.display = 'block';
+    // Reset the upload form
+    const imagePreview = document.getElementById('imagePreview');
+    const resultSection = document.getElementById('resultSection');
+    if (imagePreview) imagePreview.innerHTML = '';
+    if (resultSection) resultSection.querySelector('.result-content').innerHTML = '';
 }
 
 function openSchemes() {
     modals.schemes.style.display = 'block';
+    // Reset form fields
+    const schemeForm = document.getElementById('schemeForm');
+    if (schemeForm) schemeForm.reset();
+    // Load available schemes
+    loadAvailableSchemes();
+}
+
+function openUpdates() {
+    modals.updates.style.display = 'block';
+    // Initialize weather and market updates
+    initWeatherMarket();
+    // Focus on location search
+    setTimeout(() => {
+        const locationSearch = document.getElementById('locationSearch');
+        if (locationSearch) locationSearch.focus();
+    }, 300);
 }
 
 function searchSchemes() {
@@ -102,8 +151,109 @@ function displaySchemes(schemes) {
 
 function openUpdates() {
     modals.updates.style.display = 'block';
-    getWeatherUpdates();
-    getMarketUpdates();
+    fetchWeatherData();
+    fetchMarketData();
+}
+
+async function fetchWeatherData() {
+    const weatherDiv = document.getElementById('weatherData');
+    weatherDiv.innerHTML = '<div class="loading-spinner"></div>';
+
+    try {
+        const response = await fetch('/api/weather');
+        const data = await response.json();
+        
+        weatherDiv.innerHTML = `
+            <div class="weather-card">
+                <div class="weather-info">
+                    <h4>Today's Weather</h4>
+                    <p>Temperature: ${data.temperature}°C</p>
+                    <p>Humidity: ${data.humidity}%</p>
+                    <p>Precipitation: ${data.precipitation}%</p>
+                    <p>Wind Speed: ${data.windSpeed} km/h</p>
+                </div>
+                <div class="weather-forecast">
+                    <h4>5-Day Forecast</h4>
+                    ${data.forecast.map(day => `
+                        <div class="forecast-day">
+                            <p>${day.date}</p>
+                            <p>${day.temperature}°C</p>
+                            <p>${day.condition}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        weatherDiv.innerHTML = '<p class="error-message">Failed to load weather data. Please try again later.</p>';
+    }
+}
+
+async function fetchMarketData() {
+    const marketDiv = document.getElementById('marketData');
+    marketDiv.innerHTML = '<div class="loading-spinner"></div>';
+
+    try {
+        const response = await fetch('/api/market-prices');
+        const data = await response.json();
+        
+        marketDiv.innerHTML = `
+            <div class="market-prices">
+                <div class="price-filters">
+                    <select id="cropFilter" onchange="filterMarketData()">
+                        <option value="all">All Crops</option>
+                        ${data.crops.map(crop => `
+                            <option value="${crop.toLowerCase()}">${crop}</option>
+                        `).join('')}
+                    </select>
+                    <select id="marketFilter" onchange="filterMarketData()">
+                        <option value="all">All Markets</option>
+                        ${data.markets.map(market => `
+                            <option value="${market.toLowerCase()}">${market}</option>
+                        `).join('')}
+                    </select>
+                </div>
+                <div class="price-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Crop</th>
+                                <th>Market</th>
+                                <th>Price (₹/Quintal)</th>
+                                <th>Price Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.prices.map(price => `
+                                <tr class="price-row" data-crop="${price.crop.toLowerCase()}" data-market="${price.market.toLowerCase()}">
+                                    <td>${price.crop}</td>
+                                    <td>${price.market}</td>
+                                    <td>₹${price.price}</td>
+                                    <td class="${price.trend.toLowerCase()}">${price.trend}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        marketDiv.innerHTML = '<p class="error-message">Failed to load market data. Please try again later.</p>';
+    }
+}
+
+function filterMarketData() {
+    const cropFilter = document.getElementById('cropFilter').value;
+    const marketFilter = document.getElementById('marketFilter').value;
+    const rows = document.querySelectorAll('.price-row');
+
+    rows.forEach(row => {
+        const crop = row.dataset.crop;
+        const market = row.dataset.market;
+        const showCrop = cropFilter === 'all' || crop === cropFilter;
+        const showMarket = marketFilter === 'all' || market === marketFilter;
+        row.style.display = showCrop && showMarket ? '' : 'none';
+    });
 }
 
 // Chatbot functionality

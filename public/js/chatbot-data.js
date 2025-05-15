@@ -70,17 +70,44 @@ const chatbotData = {
     }
 };
 
-// Function to get answer based on user question and language
+// Enhanced answer matching with multiple language support and fuzzy matching
 function getAnswer(question, language = 'en') {
+    // Normalize question
+    question = question.toLowerCase().trim();
+    
+    // Get language-specific question list
     let questionList = language === 'ta' ? chatbotData.tamil.questions : chatbotData.questions;
     
-    // Simple matching algorithm
-    let bestMatch = questionList.reduce((best, current) => {
-        let currentMatch = similarity(question.toLowerCase(), current.question.toLowerCase());
-        return currentMatch > best.score ? { answer: current.answer, score: currentMatch } : best;
-    }, { answer: null, score: 0 });
+    // Find all potential matches above threshold
+    const SIMILARITY_THRESHOLD = 0.3;
+    let matches = questionList
+        .map(q => ({
+            question: q.question,
+            answer: q.answer,
+            score: similarity(question, q.question.toLowerCase())
+        }))
+        .filter(match => match.score > SIMILARITY_THRESHOLD)
+        .sort((a, b) => b.score - a.score);
     
-    return bestMatch.score > 0.3 ? bestMatch.answer : 'I apologize, but I don\'t have enough information to answer that question accurately. Please try rephrasing your question or ask something else about farming.';
+    // If we have good matches
+    if (matches.length > 0) {
+        // If multiple close matches, combine their answers
+        if (matches.length > 1 && (matches[0].score - matches[1].score < 0.1)) {
+            return `Here are some relevant answers:\n\n${matches
+                .slice(0, 2)
+                .map((m, i) => `${i + 1}) ${m.answer}`)
+                .join('\n\n')}`;
+        }
+        return matches[0].answer;
+    }
+    
+    // No good matches found
+    const suggestions = questionList
+        .slice(0, 3)
+        .map(q => q.question)
+        .join('\n- ');
+    
+    return `I apologize, but I don't have enough information to answer that question accurately. \n\nHere are some questions you can ask:\n- ${suggestions}`;
 }
 
 // Simple string similarity function

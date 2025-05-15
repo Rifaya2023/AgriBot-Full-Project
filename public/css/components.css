@@ -1,0 +1,293 @@
+/* Modal Styles */
+.modal-animated {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.modal-closing {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+.modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: slideIn 0.3s ease-out 0.1s forwards;
+}
+
+/* Chatbot Styles */
+.chatbot-container {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.chat-input {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.user-message,
+.bot-message {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 15px;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.user-message .message-content {
+    background: #007bff;
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.bot-message .message-content {
+    background: #e9ecef;
+    color: #212529;
+    border-bottom-left-radius: 5px;
+}
+
+.bot-avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.bot-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Disease Detection Styles */
+.disease-detection {
+    padding: 20px;
+}
+
+.upload-section {
+    text-align: center;
+    padding: 30px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 300px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.analyze-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.disease-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.confidence {
+    color: #28a745;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Government Schemes Styles */
+.schemes-container {
+    display: flex;
+    gap: 20px;
+}
+
+.search-section,
+.application-section {
+    flex: 1;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.scheme-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.scheme-details {
+    margin: 15px 0;
+}
+
+.upload-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: #e9ecef;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.filename {
+    flex-grow: 1;
+    font-size: 14px;
+}
+
+.filesize {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+/* Weather and Market Styles */
+.weather-market-container {
+    display: flex;
+    gap: 20px;
+}
+
+.weather-card,
+.market-card {
+    flex: 1;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.current-weather {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.temperature {
+    font-size: 48px;
+    font-weight: bold;
+    color: #212529;
+}
+
+.forecast-days {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.forecast-day {
+    text-align: center;
+    flex: 1;
+}
+
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.price-table th,
+.price-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.trend-up { color: #28a745; }
+.trend-down { color: #dc3545; }
+.trend-stable { color: #6c757d; }
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .schemes-container,
+    .weather-market-container {
+        flex-direction: column;
+    }
+    
+    .forecast-days {
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .forecast-day {
+        min-width: 100px;
+    }
+    
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+    }
+}

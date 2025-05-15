@@ -5,19 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgriBot - Smart Farming Solutions</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar" role="navigation" aria-label="Main navigation">
             <div class="logo" role="banner">AgriBot</div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <div class="nav-links" role="menubar">
-                <a href="#home" role="menuitem">Home</a>
-                <a href="#services" role="menuitem">Services</a>
-                <a href="#about" role="menuitem">About</a>
-                <a href="#contact" role="menuitem">Contact</a>
-                <a href="login.html" role="menuitem">Login</a>
-                <a href="register.html" role="menuitem">Register</a>
+                <a href="#home" role="menuitem" data-translate="home">Home</a>
+                <a href="#services" role="menuitem" data-translate="services">Services</a>
+                <a href="#about" role="menuitem" data-translate="about">About</a>
+                <a href="#contact" role="menuitem" data-translate="contact">Contact</a>
+                <a href="login.html" role="menuitem" data-translate="login">Login</a>
+                <a href="register.html" role="menuitem" data-translate="register">Register</a>
             </div>
             <div class="language-selector">
                 <label for="languageSelect" class="visually-hidden">Select Language</label>
@@ -32,7 +38,7 @@
     </header>
 
     <main>
-        <section id="home" class="hero" role="banner" aria-labelledby="hero-title">
+        <section id="home" class="hero" role="banner" aria-labelledby="hero-title" style="background-image: url('images/hero-banner.jpg');">
             <div class="hero-content">
                 <h1 id="hero-title" data-translate="welcome">Welcome to AgriBot</h1>
                 <p data-translate="subtitle">Your Smart Farming Assistant powered by AI</p>
@@ -44,27 +50,35 @@
         <h2 id="services-title" data-translate="servicesTitle">Our Services</h2>
         <div class="service-grid">
             <div class="service-card">
-                <i class="fas fa-robot"></i>
+                <div class="service-image-container">
+                    <img src="images/chatbot-icon.jpg" alt="AI Chatbot" class="service-icon">
+                </div>
                 <h3 data-translate="chatbotTitle">AI Chatbot</h3>
-                <p data-translate="chatbotDesc">Get instant answers to your farming queries</p>
+                <p class="service-description">Our AI-powered chatbot provides 24/7 support for all your farming needs. Get expert advice instantly on crop management, pest control, and best practices.</p>
                 <button onclick="openChatbot()" class="service-btn" aria-label="Open AI Chatbot" data-translate="startChat">Start Chat</button>
             </div>
             <div class="service-card">
-                <i class="fas fa-leaf"></i>
+                <div class="service-image-container">
+                    <img src="images/disease-icon.jpg" alt="Crop Disease Detection" class="service-icon">
+                </div>
                 <h3 data-translate="diseaseTitle">Crop Disease Detection</h3>
-                <p data-translate="diseaseDesc">Upload images to identify plant diseases</p>
+                <p class="service-description">Early detection of crop diseases is crucial for protecting your harvest. Our AI system analyzes plant images to identify diseases and provides treatment recommendations.</p>
                 <button onclick="openDiseaseDetection()" class="service-btn" aria-label="Open Disease Detection" data-translate="detectDisease">Detect Disease</button>
             </div>
             <div class="service-card">
-                <i class="fas fa-hand-holding-usd"></i>
+                <div class="service-image-container">
+                    <img src="images/schemes-icon.jpg" alt="Government Schemes" class="service-icon">
+                </div>
                 <h3 data-translate="schemesTitle">Government Schemes</h3>
-                <p data-translate="schemesDesc">Find eligible farming schemes and subsidies</p>
+                <p class="service-description">Stay updated with the latest government schemes and subsidies available for farmers. We help you find and apply for eligible programs to support your farming activities.</p>
                 <button onclick="openSchemes()" class="service-btn" aria-label="View Government Schemes" data-translate="viewSchemes">View Schemes</button>
             </div>
             <div class="service-card">
-                <i class="fas fa-cloud-sun"></i>
+                <div class="service-image-container">
+                    <img src="images/weather-forecast.jpg" alt="Weather & Market Updates" class="service-icon">
+                </div>
                 <h3 data-translate="weatherTitle">Weather & Market Updates</h3>
-                <p data-translate="weatherDesc">Get daily weather and crop price updates</p>
+                <p class="service-description">Make informed decisions with our comprehensive weather forecasts and real-time market price updates. Plan your farming activities and maximize your profits.</p>
                 <button onclick="openUpdates()" class="service-btn" aria-label="Check Weather and Market Updates" data-translate="checkUpdates">Check Updates</button>
             </div>
         </div>
@@ -97,6 +111,34 @@
                 <div id="resultSection" class="result-section">
                     <div class="loading-spinner" style="display: none;"></div>
                     <div class="result-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weather & Market Updates Modal -->
+    <div id="updatesModal" class="modal" role="dialog" aria-labelledby="updates-title" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="updates-container">
+                <div class="location-search">
+                    <input type="text" id="locationSearch" placeholder="Enter your location...">
+                    <select id="cropFilter">
+                        <option value="all">All Crops</option>
+                        <option value="rice">Rice</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="corn">Corn</option>
+                        <option value="sugarcane">Sugarcane</option>
+                        <option value="cotton">Cotton</option>
+                    </select>
+                </div>
+                <div class="updates-content">
+                    <div id="weatherInfo" class="weather-info">
+                        <div class="placeholder-message">Enter a location to view weather information</div>
+                    </div>
+                    <div id="marketInfo" class="market-info">
+                        <div class="placeholder-message">Enter a location to view market prices</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -201,23 +243,6 @@
         </div>
     </div>
 
-    <!-- Weather & Market Updates Modal -->
-    <div id="updatesModal" class="modal" role="dialog" aria-labelledby="updates-title" aria-modal="true">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div class="updates-container">
-                <div class="weather-section">
-                    <h3>Weather Forecast</h3>
-                    <div id="weatherData"></div>
-                </div>
-                <div class="market-section">
-                    <h3>Market Prices</h3>
-                    <div id="marketData"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     </main>
 
     <footer role="contentinfo" class="enhanced-footer">
@@ -269,6 +294,12 @@
         </div>
     </footer>
 
+    <script src="js/chatbot-data.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/disease-detection.js"></script>
+    <script src="js/schemes.js"></script>
+    <script src="js/weather-market.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/service-handlers.js"></script>
 </body>
 </html>

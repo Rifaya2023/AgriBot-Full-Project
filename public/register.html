@@ -16,10 +16,13 @@
         </div>
     </nav>
 
-    <div class="auth-container">
+    <div class="auth-container" style="background-image: url('images/background-pattern.jpg'); background-size: cover; background-position: center;">
         <div class="auth-form">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="images/chatbot-icon.jpg" alt="AgriBot Logo" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary-color);">
+            </div>
             <h2>Create an Account</h2>
-            <form id="registerForm" onsubmit="handleRegister(event)">
+            <form id="registerForm" onsubmit="handleRegister(event)" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
@@ -36,8 +39,25 @@
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
                 </div>
+                <div class="form-group">
+                    <label for="mobileNumber">Mobile Number</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state" required>
+                </div>
+                <div class="form-group">
+                    <label for="profilePicture">Profile Picture (Farmer's Photo)</label>
+                    <input type="file" id="profilePicture" name="profilePicture" accept="image/*" required>
+                </div>
                 <button type="submit" class="auth-button">Register</button>
             </form>
+            <div id="registerMessage" class="message-container"></div>
             <p class="auth-link">Already have an account? <a href="login.html">Login here</a></p>
         </div>
     </div>

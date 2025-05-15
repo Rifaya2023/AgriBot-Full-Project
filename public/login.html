@@ -16,8 +16,11 @@
         </div>
     </nav>
 
-    <div class="auth-container">
+    <div class="auth-container" style="background-image: url('images/background-pattern.jpg'); background-size: cover; background-position: center;">
         <div class="auth-form">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="images/chatbot-icon.jpg" alt="AgriBot Logo" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary-color);">
+            </div>
             <h2>Login to AgriBot</h2>
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
@@ -31,6 +34,7 @@
                 <button type="submit" class="auth-button">Login</button>
             </form>
             <p class="auth-link">Don't have an account? <a href="register.html">Register here</a></p>
+            <p class="auth-link">Admin user? <a href="admin-login.html">Login as admin</a></p>
         </div>
     </div>
 
